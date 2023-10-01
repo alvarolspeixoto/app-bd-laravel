@@ -52,8 +52,17 @@ class ClienteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateClienteRequest $request, Cliente $cliente)
+    public function update(UpdateClienteRequest $request, int $id)
     {
+
+        $cliente = Cliente::find($id);
+
+        if (!$cliente) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
         $cliente->update($request->validated());
         return ClienteResource::make($cliente);
     }

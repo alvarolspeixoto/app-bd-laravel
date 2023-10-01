@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Cliente;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateClienteRequest extends FormRequest
@@ -17,7 +18,12 @@ class UpdateClienteRequest extends FormRequest
     {
 
         
-        $id = $this->route('cliente')->id_cliente;
+        $id = $this->route('cliente');
+        // dd($id);
+
+        if (!Cliente::find($id)) {
+            return [];
+        }
 
         return [
             'nome_empresa' => 'string|max:60',
