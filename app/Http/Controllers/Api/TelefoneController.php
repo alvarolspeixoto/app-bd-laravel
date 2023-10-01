@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreClienteRequest;
-use App\Http\Requests\UpdateClienteRequest;
+use App\Http\Requests\StoreTelefoneRequest;
+use App\Http\Requests\UpdateTelefoneRequest;
 use App\Http\Resources\ClienteResource;
-use App\Models\Cliente;
+use App\Http\Resources\TelefoneResource;
+use App\Models\Telefone;
 use Illuminate\Http\Response;
 
-class ClienteController extends Controller
+class TelefoneController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,19 +18,20 @@ class ClienteController extends Controller
     public function index()
     {
 
-        $clientes = Cliente::all();
+        $telefones = Telefone::all();
 
-        return ClienteResource::collection($clientes);
+        return TelefoneResource::collection($telefones);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreClienteRequest $request)
+    public function store(StoreTelefoneRequest $request)
     {
-        $cliente = Cliente::create($request->validated());
+        
+        $telefone = Telefone::create($request->validated());
 
-        return ClienteResource::make($cliente);
+        return TelefoneResource::make($telefone);
     }
 
     /**
@@ -37,34 +39,38 @@ class ClienteController extends Controller
      */
     public function show(int $id)
     {
+        
+        $telefone = Telefone::Find($id);
 
-        $cliente = Cliente::find($id);
-
-        if (!$cliente) {
+        if (!$telefone) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        return ClienteResource::make($cliente);
+        return TelefoneResource::make($telefone);
+
+
     }
+
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateClienteRequest $request, int $id)
+    public function update(UpdateTelefoneRequest $request, int $id)
     {
+        $telefone = Telefone::find($id);
 
-        $cliente = Cliente::find($id);
-
-        if (!$cliente) {
+        if (!$telefone) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $cliente->update($request->validated());
-        return ClienteResource::make($cliente);
+        $telefone->update($request->validated());
+
+        return TelefoneResource::make($telefone);
+
     }
 
     /**
@@ -73,15 +79,15 @@ class ClienteController extends Controller
     public function destroy(int $id)
     {
 
-        $cliente = Cliente::find($id);
+        $telefone = Telefone::find($id);
 
-        if (!$cliente) {
+        if (!$telefone) {
             return response()->json([
                 'error' => 'Not Found'
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $cliente->delete();
+        $telefone->delete();
 
         return response()->noContent();
     }
