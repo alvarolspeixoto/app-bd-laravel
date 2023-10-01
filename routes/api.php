@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ClienteController;
 use App\Http\Controllers\Api\TelefoneController;
+use App\Http\Controllers\ReservaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::apiResource('/reservas', ReservaController::class);
 Route::apiResource('/clientes', ClienteController::class);
 Route::apiResource('/telefones', TelefoneController::class);
 
