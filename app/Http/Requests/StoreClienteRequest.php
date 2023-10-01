@@ -20,7 +20,7 @@ class StoreClienteRequest extends FormRequest
             'cnpj' => 'string|max:14|unique:Cliente',
             'email' => 'required|string|max:30|unique:Cliente',
             'senha' => 'required|string|max:255',
-            'tipo' => 'required'
+            'tipo' => 'required|string'
         ];
     }
 }

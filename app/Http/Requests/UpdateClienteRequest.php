@@ -3,32 +3,30 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class UpdateClienteRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+   
     public function authorize(): bool
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
+
     public function rules(): array
     {
 
-        $rule = Rule::unique('Cliente')->ignore($this->id_cliente);
+        
+        $id = $this->route('cliente')->id_cliente;
 
         return [
-            "cpf" => Rule::unique('Cliente', 'cpf')->ignore($this->id_cliente),
-            "cnpj" => $rule,
-            "email" => Rule::unique('Cliente', 'email')->ignore($this->id_cliente),
+            'nome_empresa' => 'string|max:60',
+            'nome_pessoa' => 'string|max:60',
+            'cpf' => "string|max:11|unique:Cliente,cpf,$id,id_cliente",
+            'cnpj' => "string|max:14|unique:Cliente,cnpj,$id,id_cliente",
+            'email' => "string|max:30|unique:Cliente,email,$id,id_cliente",
+            'senha' => 'string|max:255',
+            'tipo' => 'string'
         ];
     }
 }
