@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateClienteRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateClienteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +22,13 @@ class UpdateClienteRequest extends FormRequest
      */
     public function rules(): array
     {
+
+        $rule = Rule::unique('Cliente')->ignore($this->id_cliente);
+
         return [
-            //
+            "cpf" => Rule::unique('Cliente', 'cpf')->ignore($this->id_cliente),
+            "cnpj" => $rule,
+            "email" => Rule::unique('Cliente', 'email')->ignore($this->id_cliente),
         ];
     }
 }
