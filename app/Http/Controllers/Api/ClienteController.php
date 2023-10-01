@@ -7,6 +7,7 @@ use App\Http\Requests\StoreClienteRequest;
 use App\Http\Requests\UpdateClienteRequest;
 use App\Http\Resources\ClienteResource;
 use App\Models\Cliente;
+use Illuminate\Http\Response;
 
 class ClienteController extends Controller
 {
@@ -34,8 +35,17 @@ class ClienteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Cliente $cliente)
+    public function show(int $id)
     {
+
+        $cliente = Cliente::find($id);
+
+        if (!$cliente) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
         return ClienteResource::make($cliente);
     }
 
@@ -45,7 +55,6 @@ class ClienteController extends Controller
     public function update(UpdateClienteRequest $request, Cliente $cliente)
     {
         $cliente->update($request->validated());
-
         return ClienteResource::make($cliente);
     }
 
@@ -54,6 +63,8 @@ class ClienteController extends Controller
      */
     public function destroy(Cliente $cliente)
     {
-        //
+        $cliente->delete();
+
+        return response()->noContent();
     }
 }
