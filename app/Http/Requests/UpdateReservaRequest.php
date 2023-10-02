@@ -11,7 +11,7 @@ class UpdateReservaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +21,16 @@ class UpdateReservaRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('reserva');
+    
         return [
-            //
+            'data_inicio' => 'date',
+            'data_entrega' => 'date',
+            'data_previsao' => 'date',
+            'nota_fiscal_pag' => 'numeric',
+            'id_multa' => 'numeric|exists:Multa,id_multa',
+            'placa_veiculo' => "unique:Reserva,placa_veiculo,$id,id_reserva|string|max:7|exists:Veiculo,placa",
+            'id_cliente' => 'required|numeric|exists:Cliente,id_cliente',
         ];
     }
 }

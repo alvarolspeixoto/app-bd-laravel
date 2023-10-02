@@ -19,7 +19,6 @@ class UpdateClienteRequest extends FormRequest
 
         
         $id = $this->route('cliente');
-        // dd($id);
 
         if (!Cliente::find($id)) {
             return [];
