@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReservaRequest;
 use App\Http\Requests\UpdateReservaRequest;
 use App\Http\Resources\ReservaResource;
@@ -25,7 +26,9 @@ class ReservaController extends Controller
      */
     public function store(StoreReservaRequest $request)
     {
-        //
+        $reserva = Reserva::create($request->validated());
+
+        return ReservaResource::make($reserva);
     }
 
     /**
@@ -47,9 +50,20 @@ class ReservaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateReservaRequest $request, Reserva $reserva)
+    public function update(UpdateReservaRequest $request, int $id)
     {
-        //
+        $reserva = Reserva::find($id);
+
+        if (!$reserva) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $reserva->update($request->validated());
+
+        return ReservaResource::make($reserva);
+
     }
 
     /**

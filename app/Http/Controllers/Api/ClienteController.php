@@ -64,6 +64,7 @@ class ClienteController extends Controller
         }
 
         $cliente->update($request->validated());
+        
         return ClienteResource::make($cliente);
     }
 

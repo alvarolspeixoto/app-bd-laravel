@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\ClienteController;
 use App\Http\Controllers\Api\TelefoneController;
-use App\Http\Controllers\ReservaController;
+use App\Http\Controllers\Api\ReservaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

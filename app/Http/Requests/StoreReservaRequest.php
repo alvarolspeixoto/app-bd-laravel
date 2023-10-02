@@ -11,7 +11,7 @@ class StoreReservaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,13 @@ class StoreReservaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'data_inicio' => 'required|date',
+            'data_entrega' => 'date',
+            'data_previsao' => 'required|date',
+            'nota_fiscal_pag' => 'numeric',
+            'id_multa' => 'numeric|exists:Multa,id_multa',
+            'placa_veiculo' => 'required|unique:Reserva|string|max:7|exists:Veiculo,placa',
+            'id_cliente' => 'required|numeric|exists:Cliente,id_cliente',
         ];
     }
 }
