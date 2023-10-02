@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreReservaRequest;
 use App\Http\Requests\UpdateReservaRequest;
+use App\Http\Resources\ReservaResource;
 use App\Models\Reserva;
+use Illuminate\Http\Response;
 
 class ReservaController extends Controller
 {
@@ -13,15 +15,9 @@ class ReservaController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $reservas = Reserva::all();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return ReservaResource::collection($reservas);
     }
 
     /**
@@ -35,17 +31,17 @@ class ReservaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Reserva $reserva)
+    public function show(int $id)
     {
-        //
-    }
+        $reserva = Reserva::find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Reserva $reserva)
-    {
-        //
+        if (!$reserva) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return ReservaResource::make($reserva);
     }
 
     /**
@@ -59,8 +55,18 @@ class ReservaController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reserva $reserva)
+    public function destroy(int $id)
     {
-        //
+        $reserva = Reserva::find($id);
+
+        if (!$reserva) {
+            return response()->json([
+                'error' => 'Not Found'
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        $reserva->delete();
+
+        return response()->noContent();
     }
 }
